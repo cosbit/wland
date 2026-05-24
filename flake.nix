@@ -28,6 +28,8 @@
         repoRoot = ./.;
         cargoInputs = with pkgs; [
           cargo
+          coreutils
+          stdenv.cc
           rustc
           rustfmt
           rustPackages.clippy
@@ -39,7 +41,9 @@
             runtimeInputs = cargoInputs;
             text = ''
               set -euo pipefail
-              cd ${repoRoot}
+              workdir="$(mktemp -d)"
+              cp -R ${repoRoot}/. "$workdir/"
+              cd "$workdir"
               exec cargo ${subcommand} "$@"
             '';
           };
@@ -49,12 +53,6 @@
           subcommand = "build";
         };
         compileAppDef = utils.lib.mkApp { drv = compileApp; };
-
-        testApp = mkCargoApp {
-          name = "wland-test";
-          subcommand = "test";
-        };
-        testAppDef = utils.lib.mkApp { drv = testApp; };
 
         workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = repoRoot; };
         overlay = workspace.mkPyprojectOverlay {
@@ -78,10 +76,14 @@
         };
         pythonTestApp = pkgs.writeShellApplication {
           name = "wland-test";
-          runtimeInputs = [ testVenv ];
+          runtimeInputs = cargoInputs ++ [ testVenv ];
           text = ''
             set -euo pipefail
-            cd ${repoRoot}
+            workdir="$(mktemp -d)"
+            cp -R ${repoRoot}/. "$workdir/"
+            cd "$workdir"
+            cargo build
+            export WLAND_BIN="$workdir/target/debug/wland"
             exec "${testVenv}/bin/python" -m pytest tests/units/ "$@"
           '';
         };
