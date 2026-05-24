@@ -4,27 +4,29 @@ wland should be the aggregate/root module. It should define the top-level desire
 
 For example:
 
-src/wland
-├── mod.rs
-├── desired.rs
-├── observed.rs
-├── runtime.rs
-├── plan.rs
-├── validate.rs
-├── http.rs
-└── apply.rs
+src/wlan/
+    ├── mod.rs
+    ├── schema.rs
+    ├── engine.rs
+    ├── observe.rs
+    ├── validate.rs
+    ├── http.rs
+    ├── cli.rs
+    └── apply.rs
 
 Then each domain module owns its own local schema and behavior.
 
 For example:
 
-src/wan
-├── mod.rs
-├── schema.rs
-├── engine.rs
-├── observe.rs
-├── http.rs
-└── apply.rs
+src/phy/
+│   ├── mod.rs
+│   ├── schema.rs
+│   ├── engine.rs
+│   ├── observe.rs
+│   ├── validate.rs
+│   ├── http.rs
+│   ├── cli.rs
+│   └── apply.rs
 
 Specific engines and integration must be kept within their appropriate domain. 
 
