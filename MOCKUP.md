@@ -539,7 +539,9 @@ Examples of drift:
     }
   }
 }
-
+```
+## WLANd Observed State Object
+```json
 {
   "timestamp": "2026-05-24T00:00:00Z",
   "interfaces": {
@@ -611,3 +613,4 @@ Examples of drift:
     }
   }
 }
+```

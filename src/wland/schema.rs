@@ -1,0 +1,10 @@
+
+
+
+struct WLANDesired {
+    
+}
+
+struct WLANObserved {
+    
+}

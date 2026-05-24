@@ -116,14 +116,14 @@ BSS objects should not store raw passphrases directly in the main config.
 Instead, they should reference secrets.
 
 Example:
-
+```json
 {
   "security": {
     "mode": "wpa2-wpa3-personal",
     "secret_ref": "secret://wifi/home"
   }
 }
-
+```
 Possible secret backends:
 
 Local encrypted file
@@ -133,12 +133,12 @@ Plain local file for development only
 
 For MVP, a local root-only secret file is acceptable.
 
-Client Model
+## Client Model
 
 WLANd should expose connected clients as first-class runtime objects.
 
 Example:
-
+```json
 {
   "clients": {
     "client0": {
@@ -155,6 +155,7 @@ Example:
     }
   }
 }
+```
 
 Client data may come from:
 
@@ -162,7 +163,8 @@ hostapd station table
 DHCP lease table
 ARP/neighbor table
 Optional mDNS/hostname discovery
-Example CLI
+## Example CLI
+```bash
 wland status
 
 wland interfaces list
@@ -192,7 +194,11 @@ wland wlan create wlan0 \
 wland forwarding allow lan0 wan0 --nat true
 
 wland apply
-Example API Shape
+
+```
+
+## Example API Shape
+```http
 GET /api/v1/status
 GET /api/v1/interfaces
 GET /api/v1/phy
@@ -209,7 +215,8 @@ POST /api/v1/forwarding
 
 POST /api/v1/apply
 POST /api/v1/rollback
-MVP Scope
+```
+## MVP Scope
 
 The first useful version should support:
 
@@ -250,3 +257,4 @@ Prometheus metrics
 OpenTelemetry traces
 Controller-agent split for multiple APs
 Design Principle
+
