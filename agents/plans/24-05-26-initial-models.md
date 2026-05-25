@@ -27,6 +27,7 @@ Create the initial Rust data model scaffolding for WLANd so the project has a cl
 - Add the minimum module wiring needed for the crate to compile cleanly with the new model split.
 - Add placeholder API/CLI module entry points only where the current tree already expects them.
 - Add tests that validate the project compiles and that the top-level model types are present.
+- Add `src/common/exceptions.rs` and `src/common/errcodes.rs`
 
 ## Not in scope
 
@@ -49,6 +50,10 @@ Create the initial Rust data model scaffolding for WLANd so the project has a cl
 - `clients` models associated stations and lease-derived runtime client data.
 - `logs` models validation/apply/service log surfaces.
 - `dbus` owns the IPC surface and should stay thin.
+
+## Tests
+`12-validate-models.py`
+- test_
 
 ## Execution plan
 

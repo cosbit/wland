@@ -1,5 +1,11 @@
 mod bss;
+mod clients;
+mod common;
+mod dbus;
+mod dhcp;
+mod firewall;
 mod lan;
+mod logs;
 mod phy;
 mod wan;
 mod wlan;
