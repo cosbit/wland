@@ -30,7 +30,5 @@ def test_link_show_output_shape() -> None:
 
     assert result.returncode == 0, output
     assert "LINKS" in output, output
-    assert "ipv4:" in output.lower(), output
-    assert "address:" in output.lower(), output
-    assert "prefix:" in output.lower(), output
-    assert "network:" in output.lower(), output
+    assert "ifindex:" in output, output
+    assert "kind:" in output, output

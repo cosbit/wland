@@ -27,7 +27,7 @@ enum Command {
     #[command(about = "Bind a PHY to a BSS and a LAN for concrete AP wiring.")]
     Wlan(crate::wlan::cli::WlanCli),
     #[command(about = "Inspect runtime network interfaces from rtnetlink.")]
-    Link(crate::rtnet::cli::LinkCli),
+    Link(crate::link::cli::LinkCli),
 }
 
 

@@ -1,17 +1,15 @@
 pub mod schema;
 pub mod cli;
 
-use crate::rtnet::schema::{
-    BridgeRequest, DeleteBridgeRequest, FetchRequest, InitRequest, Ipv4Address, MacAddress,
-    NetdevChange, NetdevHandle, NetdevKind, OperState, ReloadRequest, RtnetDiff, RtnetInitResult,
+use crate::link::schema::{
+    BridgeRequest, DeleteBridgeRequest, FetchRequest, InitRequest, MacAddress, NetdevChange,
+    NetdevHandle, NetdevKind, OperState, ReloadRequest, RtnetDiff, RtnetInitResult,
     RtnetReloadResult, RtnetResult, RtnetState,
 };
 use anyhow::{Context, Result};
 use futures_util::stream::TryStreamExt;
-use ipnet::Ipv4Net;
 use rtnetlink::new_connection;
 use std::collections::BTreeMap;
-use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
@@ -112,7 +110,7 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
     let mut oper_state = OperState::Unknown;
     let mut mtu = None;
     let mut mac = None;
-    let mut ipv4 = None;
+    let ipv4 = None;
     let mut master = None;
 
     for attribute in message.attributes {
@@ -125,7 +123,6 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
             }
             LinkAttribute::Controller(value) | LinkAttribute::Link(value) => master = Some(value),
             LinkAttribute::OperState(state) => {
-
                 oper_state = match state {
                     State::Unknown => OperState::Unknown,
                     State::NotPresent => OperState::NotPresent,

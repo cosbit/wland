@@ -7,7 +7,7 @@ pub mod firewall;
 pub mod lan;
 pub mod logs;
 pub mod phy;
-pub mod rtnet;
+pub mod link;
 pub mod wan;
 pub mod wlan;
 pub mod wland;
