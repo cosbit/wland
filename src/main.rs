@@ -6,6 +6,7 @@ mod dhcp;
 mod firewall;
 mod lan;
 mod logs;
+mod mgmt;
 mod phy;
 mod link;
 mod wan;

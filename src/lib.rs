@@ -6,7 +6,7 @@ pub mod dhcp;
 pub mod firewall;
 pub mod lan;
 pub mod logs;
-pub mod management;
+pub mod mgmt;
 pub mod phy;
 pub mod link;
 pub mod wan;

@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 use crate::common::schemas::{BssId, LanId, Metadata, PhyId, WanId, WlanId};
 use crate::firewall::schema::FirewallDesired;
 use crate::lan::schema::LanDesired;
-use crate::wland::management::schema::ManagementDesired;
+use crate::mgmt::schema::ManagementDesired;
 use crate::phy::schema::WirelessPhyDesired as PhyDesired;
 use crate::wan::schema::WanDesired;
 use crate::wlan::schema::WlanDesired;
