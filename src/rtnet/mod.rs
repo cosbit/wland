@@ -2,14 +2,16 @@ pub mod schema;
 pub mod cli;
 
 use crate::rtnet::schema::{
-    BridgeRequest, DeleteBridgeRequest, FetchRequest, InitRequest, MacAddress, NetdevChange,
-    NetdevHandle, NetdevKind, OperState, ReloadRequest, RtnetDiff, RtnetInitResult,
+    BridgeRequest, DeleteBridgeRequest, FetchRequest, InitRequest, Ipv4Address, MacAddress,
+    NetdevChange, NetdevHandle, NetdevKind, OperState, ReloadRequest, RtnetDiff, RtnetInitResult,
     RtnetReloadResult, RtnetResult, RtnetState,
 };
 use anyhow::{Context, Result};
 use futures_util::stream::TryStreamExt;
+use ipnet::Ipv4Net;
 use rtnetlink::new_connection;
 use std::collections::BTreeMap;
+use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
@@ -110,6 +112,7 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
     let mut oper_state = OperState::Unknown;
     let mut mtu = None;
     let mut mac = None;
+    let mut ipv4 = None;
     let mut master = None;
 
     for attribute in message.attributes {
@@ -117,11 +120,15 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
             LinkAttribute::IfName(name) => ifname = name,
             LinkAttribute::Mtu(value) => mtu = Some(value),
             LinkAttribute::Address(value) => mac = Some(MacAddress(format_mac(&value))),
+            LinkAttribute::AfSpecInet(items) => {
+                ipv4 = parse_ipv4_attributes(&items);
+            }
             LinkAttribute::PermAddress(value) if mac.is_none() => {
                 mac = Some(MacAddress(format_mac(&value)))
             }
             LinkAttribute::Controller(value) | LinkAttribute::Link(value) => master = Some(value),
             LinkAttribute::OperState(state) => {
+
                 oper_state = match state {
                     State::Unknown => OperState::Unknown,
                     State::NotPresent => OperState::NotPresent,
@@ -158,8 +165,25 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
         oper_state,
         mtu,
         mac,
+        ipv4,
         master,
     }
+}
+
+fn parse_ipv4_attributes(items: &Vec<netlink_packet_route::link::LinkNla>) -> Option<Ipv4Address> {
+    for item in items {
+        if let netlink_packet_route::link::LinkNla::Ipv4(ifaddr) = item {
+            let address = Ipv4Addr::from(u32::from_be_bytes(ifaddr.address));
+            let prefix = ifaddr.prefix_len;
+            let network = Ipv4Net::new(address, prefix).ok()?.network();
+            return Some(Ipv4Address {
+                address: address.to_string(),
+                prefix,
+                network: network.to_string(),
+            });
+        }
+    }
+    None
 }
 
 fn diff_states(previous: &RtnetState, current: &RtnetState) -> RtnetDiff {

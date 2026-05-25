@@ -25,6 +25,13 @@ pub enum OperState {
 pub struct MacAddress(pub String);
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Ipv4Address {
+    pub address: String,
+    pub prefix: u8,
+    pub network: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct NetdevHandle {
     pub ifindex: u32,
     pub ifname: String,
@@ -33,6 +40,7 @@ pub struct NetdevHandle {
     pub oper_state: OperState,
     pub mtu: Option<u32>,
     pub mac: Option<MacAddress>,
+    pub ipv4: Option<Ipv4Address>,
     pub master: Option<u32>,
 }
 

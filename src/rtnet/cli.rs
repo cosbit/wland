@@ -52,6 +52,12 @@ fn print_state(state: &crate::rtnet::schema::RtnetState) {
         if let Some(mac) = &iface.mac {
             println!("    mac:         {}", mac.0);
         }
+        if let Some(ipv4) = &iface.ipv4 {
+            println!("    ipv4:");
+            println!("      address:   {}", ipv4.address);
+            println!("      prefix:    {}", ipv4.prefix);
+            println!("      network:   {}", ipv4.network);
+        }
         println!("    master:      {}", iface.master.map_or_else(|| "none".to_string(), |value| value.to_string()));
     }
 }
