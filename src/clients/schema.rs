@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[allow(unused_imports)]
-pub use crate::common::{
+pub use crate::common::contracts::{
     ClientIdentity, ClientObserved, ClientPolicyDesired, DhcpLeaseObserved, WifiClientObserved,
 };
 

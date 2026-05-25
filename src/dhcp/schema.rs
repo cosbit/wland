@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[allow(unused_imports)]
-pub use crate::common::{DhcpLeaseObserved, DhcpServerDesired};
+pub use crate::common::contracts::{DhcpLeaseObserved, DhcpServerDesired};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DhcpRuntime {

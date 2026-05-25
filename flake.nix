@@ -41,9 +41,6 @@
             runtimeInputs = cargoInputs;
             text = ''
               set -euo pipefail
-              workdir="$(mktemp -d)"
-              cp -R ${repoRoot}/. "$workdir/"
-              cd "$workdir"
               exec cargo ${subcommand} "$@"
             '';
           };
@@ -53,6 +50,12 @@
           subcommand = "build";
         };
         compileAppDef = utils.lib.mkApp { drv = compileApp; };
+
+        buildApp = mkCargoApp {
+          name = "wland-build";
+          subcommand = "build --release";
+        };
+        buildAppDef = utils.lib.mkApp { drv = buildApp; };
 
         workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = repoRoot; };
         overlay = workspace.mkPyprojectOverlay {
@@ -102,6 +105,7 @@
       {
         apps.default = compileAppDef;
         apps.compile = compileAppDef;
+        apps.build = buildAppDef;
         apps.test = pythonTestAppDef;
         defaultApp = compileAppDef;
 

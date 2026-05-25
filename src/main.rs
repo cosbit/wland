@@ -7,6 +7,7 @@ mod firewall;
 mod lan;
 mod logs;
 mod phy;
+mod rtnet;
 mod wan;
 mod wlan;
 mod wland;

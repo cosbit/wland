@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[allow(unused_imports)]
-pub use crate::common::{
+pub use crate::common::contracts::{
     WifiClientObserved, WlanInterfaceCapabilities, WlanInterfaceDesired, WlanInterfaceIdentity,
     WlanInterfaceObserved, WlanRuntimeMode,
 };

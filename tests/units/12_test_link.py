@@ -34,3 +34,11 @@ def test_cli_help_pages() -> None:
 
         assert result.returncode == 0, output
         assert expected.lower() in output, output
+
+
+def test_rtnl_show_help_page() -> None:
+    result = run_cli("rtnl", "show", "--help")
+    output = (result.stdout + result.stderr).lower()
+
+    assert result.returncode == 0, output
+    assert "show the current runtime interface snapshot" in output, output

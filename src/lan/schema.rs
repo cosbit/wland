@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::net::{IpAddr, Ipv4Addr};
 
 #[allow(unused_imports)]
-pub use crate::common::{
+pub use crate::common::contracts::{
     BridgeCapabilities, BridgeDesired, BridgeFdbEntry, BridgeIdentity, BridgeObserved,
     DhcpServerDesired, DnsForwarderDesired, Ipv4InterfaceDesired, Ipv6InterfaceDesired, LanDesired,
 };
