@@ -35,6 +35,15 @@
           rustPackages.clippy
         ];
 
+        wlandBin = pkgs.writeShellApplication {
+          name = "wland";
+          runtimeInputs = cargoInputs;
+          text = ''
+            set -euo pipefail
+            exec cargo run -- "$@"
+          '';
+        };
+
         mkCargoApp = { name, subcommand }:
           pkgs.writeShellApplication {
             inherit name;
@@ -93,12 +102,13 @@
         pythonTestAppDef = utils.lib.mkApp { drv = pythonTestApp; };
 
         devShell = pkgs.mkShell {
-          buildInputs = cargoInputs ++ [ pkgs.pre-commit pkgs.uv pythonSet.python.interpreter ];
+          buildInputs = cargoInputs ++ [ pkgs.pre-commit pkgs.uv testVenv wlandBin ];
           RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
           shellHook = ''
             export UV_NO_SYNC=1
-            export UV_PYTHON=${pythonSet.python.interpreter}
+            export UV_PYTHON=${testVenv}/bin/python
             export UV_PYTHON_DOWNLOADS=never
+            export PATH=${wlandBin}/bin:$PATH
           '';
         };
       in

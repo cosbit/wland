@@ -16,29 +16,20 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_cli_help_pages() -> None:
-    cases = [
-        (["--help"], "aggregate controller"),
-        (["wan", "--help"], "WAN describes the upstream interface"),
-        (["lan", "--help"], "LAN describes the local bridge or subnet"),
-        (["phy", "--help"], "PHY describes the physical radio identity"),
-        (["bss", "--help"], "BSS describes the advertised network"),
-        (["wlan", "--help"], "WLAN describes the concrete access-point binding"),
-        (["rtnl", "--help"], "RTNL exposes the current Linux interface table"),
-        (["rtnl", "show", "--help"], "Show the current runtime interface snapshot"),
-    ]
-
-    for args, expected in cases:
-        result = run_cli(*args)
-        output = (result.stdout + result.stderr).lower()
-
-        assert result.returncode == 0, output
-        assert expected.lower() in output, output
-
-
-def test_rtnl_show_help_page() -> None:
-    result = run_cli("rtnl", "show", "--help")
+def test_link_help_page() -> None:
+    result = run_cli("link", "--help")
     output = (result.stdout + result.stderr).lower()
 
     assert result.returncode == 0, output
-    assert "show the current runtime interface snapshot" in output, output
+    assert "link exposes the current linux interface table" in output, output
+
+
+def test_link_show_output_shape() -> None:
+    result = run_cli("link", "show")
+    output = result.stdout + result.stderr
+
+    assert result.returncode == 0, output
+    assert "LINKS" in output, output
+    assert "lo" in output or "link/loopback" in output, output
+    assert "ifindex:" in output, output
+    assert "kind:" in output, output

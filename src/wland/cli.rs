@@ -27,7 +27,7 @@ enum Command {
     #[command(about = "Bind a PHY to a BSS and a LAN for concrete AP wiring.")]
     Wlan(crate::wlan::cli::WlanCli),
     #[command(about = "Inspect runtime network interfaces from rtnetlink.")]
-    Rtnl(crate::rtnet::cli::RtnetCli),
+    Link(crate::rtnet::cli::LinkCli),
 }
 
 
@@ -40,7 +40,7 @@ pub fn run() -> Result<()> {
         Some(Command::Phy(cmd)) => cmd.run(),
         Some(Command::Bss(cmd)) => cmd.run(),
         Some(Command::Wlan(cmd)) => cmd.run(),
-        Some(Command::Rtnl(cmd)) => cmd.run(),
+        Some(Command::Link(cmd)) => cmd.run(),
         None => {
             Cli::command().print_long_help()?;
             println!();

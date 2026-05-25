@@ -19,3 +19,9 @@
 - Use `nix run .#compile` before `nix run .#test` when checking code changes.
 - If a workflow needs a dedicated command, create the Nix app first, then add a script alias only if needed.
 - When adding new tracked source files for Nix builds or tests, run `git add .` so the file is included in the staged tree before invoking `nix run`.
+
+## Tests Guideliness
+
+- Use `pytest` to make CLI tests.
+- Use `nix run .#test` to call it.
+- New unit files are sequentially numbered and named `Mm-short-desc.py`, where `M` is the major domain like `link`, `wlan`, or `wan`, and `m` is the minor field like `cli`, `http`, or `daemon`.

@@ -24,8 +24,6 @@ def test_cli_help_pages() -> None:
         (["phy", "--help"], "PHY describes the physical radio identity"),
         (["bss", "--help"], "BSS describes the advertised network"),
         (["wlan", "--help"], "WLAN describes the concrete access-point binding"),
-        (["rtnl", "--help"], "RTNL exposes the current Linux interface table"),
-        (["rtnl", "show", "--help"], "Show the current runtime interface snapshot"),
     ]
 
     for args, expected in cases:

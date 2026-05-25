@@ -1,33 +1,36 @@
 use anyhow::{Context, Result};
 use clap::{Args, Subcommand};
+use tokio::runtime::Builder;
 
 #[derive(Debug, Args)]
 #[command(
     about = "Inspect runtime network interfaces from rtnetlink.",
-    long_about = "RTNL exposes the current Linux interface table as observed through rtnetlink.",
+    long_about = "Link exposes the current Linux interface table as observed through rtnetlink.",
     arg_required_else_help = true
 )]
-pub struct RtnetCli {
+pub struct LinkCli {
     #[command(subcommand)]
-    command: RtnetCommand,
+    command: LinkCommand,
 }
 
 #[derive(Debug, Subcommand)]
-enum RtnetCommand {
+enum LinkCommand {
     #[command(about = "Show the current runtime interface snapshot.")]
     Show,
 }
 
-impl RtnetCli {
+impl LinkCli {
     pub fn run(self) -> Result<()> {
         match self.command {
-            RtnetCommand::Show => {
-                let service = tokio::runtime::Handle::current()
-                    .block_on(crate::rtnet::RtnetlinkService::new())
-                    .context("failed to create rtnetlink service")?;
-                let state = tokio::runtime::Handle::current()
-                    .block_on(service.fetch(crate::rtnet::schema::FetchRequest))?
-                    .value;
+            LinkCommand::Show => {
+                let runtime = Builder::new_current_thread()
+                    .enable_all()
+                    .build()
+                    .context("failed to create runtime")?;
+                let state = runtime.block_on(async {
+                    let service = crate::rtnet::RtnetlinkService::new().await?;
+                    service.fetch(crate::rtnet::schema::FetchRequest).await.map(|result| result.value)
+                })?;
                 print_state(&state);
                 Ok(())
             }
