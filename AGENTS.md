@@ -31,5 +31,6 @@
 ## Tests Guideliness
 
 - Use `pytest` to make CLI tests.
+- Prefer CLI tests that execute the installed `wland` binary through the shared `run_cli` helper pattern used in `tests/units/11-run-cli.py` and `tests/units/12-test-link.py`.
 - Use `nix run .#test` to call it.
 - New unit files are sequentially numbered and named `Mm-short-desc.py`, where `M` is the major domain like `link`, `wlan`, or `wan`, and `m` is the minor field like `cli`, `http`, or `daemon`.

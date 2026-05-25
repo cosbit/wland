@@ -1,16 +1,15 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-use crate::bss::schema::BssDesired;
 use crate::common::schemas::{BssId, LanId, Metadata, PhyId, WanId, WlanId};
 use crate::firewall::schema::FirewallDesired;
 use crate::lan::schema::LanDesired;
-use crate::management::schema::ManagementDesired;
-use crate::phy::schema::PhyDesired;
+use crate::wland::management::schema::ManagementDesired;
+use crate::phy::schema::WirelessPhyDesired as PhyDesired;
 use crate::wan::schema::WanDesired;
 use crate::wlan::schema::WlanDesired;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct WlandDesiredState {
     pub version: u32,
     pub metadata: Metadata,
@@ -25,7 +24,7 @@ pub struct WlandDesiredState {
     pub phy: BTreeMap<PhyId, PhyDesired>,
 
     #[serde(default)]
-    pub bss: BTreeMap<BssId, BssDesired>,
+    pub bss: BTreeMap<BssId, crate::bss::schema::BssConfig>,
 
     #[serde(default)]
     pub wlan: BTreeMap<WlanId, WlanDesired>,

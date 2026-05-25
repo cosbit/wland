@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::common::schemas::{AddressMethod, InterfaceRef, Ipv4Config, Ipv6Config};
+use crate::common::schemas::{InterfaceRef, Ipv4Config, Ipv6Config};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WanNatConfig {
