@@ -1,56 +1,38 @@
 use serde::{Deserialize, Serialize};
-use std::net::{IpAddr, Ipv4Addr};
+use std::net::Ipv4Addr;
 
-#[allow(unused_imports)]
-pub use crate::common::contracts::{
-    BridgeCapabilities, BridgeDesired, BridgeFdbEntry, BridgeIdentity, BridgeObserved,
-    DhcpServerDesired, DnsForwarderDesired, Ipv4InterfaceDesired, Ipv6InterfaceDesired, LanDesired,
-};
+use crate::common::schemas::{BridgeConfig, DurationString, Ipv4Config};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LanConfig {
+pub struct LanDesired {
     pub name: String,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    pub bridge: LanBridge,
-    pub ipv4: LanIpv4,
-    pub dhcp: LanDhcp,
-    pub dns: LanDns,
+
+    pub bridge: BridgeConfig,
+    pub ipv4: Ipv4Config,
+    pub dhcp: DhcpServerConfig,
+    pub dns: DnsConfig,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub vlan_id: Option<u16>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LanBridge {
-    pub name: String,
-    pub stp: bool,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LanIpv4 {
-    pub address: Ipv4Addr,
-    pub prefix: u8,
-    pub network: Ipv4Addr,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LanDhcp {
+pub struct DhcpServerConfig {
     pub enabled: bool,
     pub range_start: Ipv4Addr,
     pub range_end: Ipv4Addr,
-    pub lease_time: String,
-    pub dns_servers: Vec<IpAddr>,
+    pub lease_time: DurationString,
+    pub dns_servers: Vec<Ipv4Addr>,
     pub gateway: Ipv4Addr,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LanDns {
+pub struct DnsConfig {
     pub enabled: bool,
-    pub upstream: Vec<IpAddr>,
-}
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[allow(dead_code)]
-pub struct LanObserved {
-    pub bridge: String,
-    pub operstate: String,
-    pub addresses: Vec<Ipv4Addr>,
-    pub members: Vec<String>,
+    #[serde(default)]
+    pub upstream: Vec<Ipv4Addr>,
 }

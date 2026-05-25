@@ -1,10 +1,51 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[allow(unused_imports)]
-pub use crate::common::contracts::{
-    ClientIdentity, ClientObserved, ClientPolicyDesired, DhcpLeaseObserved, WifiClientObserved,
-};
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ClientIdentity {
+    pub mac: String,
+    pub hostname: Option<String>,
+    pub vendor_oui: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ClientObserved {
+    pub identity: ClientIdentity,
+    pub ip_addresses: Vec<String>,
+    pub connected_via: Option<String>,
+    pub lan_binding: Option<String>,
+    pub bss_binding: Option<String>,
+    pub signal_dbm: Option<i32>,
+    pub rx_rate_mbps: Option<f32>,
+    pub tx_rate_mbps: Option<f32>,
+    pub associated: bool,
+    pub dhcp_lease_active: bool,
+    pub last_seen_at: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct WifiClientObserved {
+    pub identity: ClientIdentity,
+    pub ip_addresses: Vec<String>,
+    pub connected_via: Option<String>,
+    pub lan_binding: Option<String>,
+    pub bss_binding: Option<String>,
+    pub signal_dbm: Option<i32>,
+    pub rx_rate_mbps: Option<f32>,
+    pub tx_rate_mbps: Option<f32>,
+    pub associated: bool,
+    pub dhcp_lease_active: bool,
+    pub last_seen_at: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ClientPolicyDesired {
+    pub mac: String,
+    pub name: Option<String>,
+    pub blocked: bool,
+    pub reserved_ip: Option<String>,
+    pub allowed_lans: Vec<String>,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ClientsRuntime {

@@ -1,8 +1,33 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[allow(unused_imports)]
-pub use crate::common::contracts::{FirewallDesired, FirewallProfileDesired, NatDesired, NftTableDesired};
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NftTableDesired {
+    pub name: String,
+    pub family: String,
+    pub description: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FirewallProfileDesired {
+    pub name: String,
+    pub description: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FirewallDesired {
+    pub backend: String,
+    pub tables: Vec<NftTableDesired>,
+    pub profiles: Vec<FirewallProfileDesired>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NatDesired {
+    pub enabled: bool,
+    pub source_lan: String,
+    pub outbound_wan: String,
+    pub masquerade: bool,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FirewallConfig {

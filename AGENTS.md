@@ -20,6 +20,14 @@
 - If a workflow needs a dedicated command, create the Nix app first, then add a script alias only if needed.
 - When adding new tracked source files for Nix builds or tests, run `git add .` so the file is included in the staged tree before invoking `nix run`.
 
+## Common Schemas
+
+- Put reusable value objects in `src/common/schemas.rs` only when they are shared vocabulary across domains.
+- Keep domain-owned intent, runtime state, policy, and inventory types in their domain `schema.rs` files.
+- Prefer small, boring shared types such as IDs, names, timestamps, address primitives, enums, and generic status wrappers.
+- Do not move `Desired`, `Observed`, runtime, station/client, lease, DHCP, DNS, NAT, firewall zone, or management policy structs into `common`.
+- If a common type starts growing domain-specific fields, move that specialization back into the owning domain.
+
 ## Tests Guideliness
 
 - Use `pytest` to make CLI tests.
