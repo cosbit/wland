@@ -1,5 +1,10 @@
 use serde::{Deserialize, Serialize};
 
+#[allow(unused_imports)]
+pub use crate::common::{
+    Ipv4InterfaceDesired, Ipv6InterfaceDesired, NatDesired, WanAddressMethod, WanDesired,
+};
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WanConfig {
     pub description: Option<String>,

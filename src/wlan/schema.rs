@@ -1,5 +1,11 @@
 use serde::{Deserialize, Serialize};
 
+#[allow(unused_imports)]
+pub use crate::common::{
+    WifiClientObserved, WlanInterfaceCapabilities, WlanInterfaceDesired, WlanInterfaceIdentity,
+    WlanInterfaceObserved, WlanRuntimeMode,
+};
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WlanConfig {
     pub description: Option<String>,

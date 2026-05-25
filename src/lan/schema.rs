@@ -1,6 +1,12 @@
 use serde::{Deserialize, Serialize};
 use std::net::{IpAddr, Ipv4Addr};
 
+#[allow(unused_imports)]
+pub use crate::common::{
+    BridgeCapabilities, BridgeDesired, BridgeFdbEntry, BridgeIdentity, BridgeObserved,
+    DhcpServerDesired, DnsForwarderDesired, Ipv4InterfaceDesired, Ipv6InterfaceDesired, LanDesired,
+};
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LanConfig {
     pub name: String,

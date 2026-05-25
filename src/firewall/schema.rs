@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+#[allow(unused_imports)]
+pub use crate::common::{FirewallDesired, FirewallProfileDesired, NatDesired, NftTableDesired};
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FirewallConfig {
     pub backend: String,

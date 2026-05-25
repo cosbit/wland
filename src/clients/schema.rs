@@ -1,6 +1,11 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+#[allow(unused_imports)]
+pub use crate::common::{
+    ClientIdentity, ClientObserved, ClientPolicyDesired, DhcpLeaseObserved, WifiClientObserved,
+};
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ClientsRuntime {
     pub timestamp: Option<String>,
