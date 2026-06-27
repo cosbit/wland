@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::common::schemas::{BssId, PhyId, LanId, WlanInterfaceRef};
+use crate::common::schemas::{BssId, LanId, PhyId, WlanInterfaceRef};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WlanDesired {

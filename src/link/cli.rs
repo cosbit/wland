@@ -29,7 +29,10 @@ impl LinkCli {
                     .context("failed to create runtime")?;
                 let state = runtime.block_on(async {
                     let service = crate::link::RtnetlinkService::new().await?;
-                    service.fetch(crate::link::schema::FetchRequest).await.map(|result| result.value)
+                    service
+                        .fetch(crate::link::schema::FetchRequest)
+                        .await
+                        .map(|result| result.value)
                 })?;
                 print_state(&state);
                 Ok(())
@@ -58,7 +61,12 @@ fn print_state(state: &crate::link::schema::RtnetState) {
             println!("      prefix:    {}", ipv4.prefix);
             println!("      network:   {}", ipv4.network);
         }
-        println!("    master:      {}", iface.master.map_or_else(|| "none".to_string(), |value| value.to_string()));
+        println!(
+            "    master:      {}",
+            iface
+                .master
+                .map_or_else(|| "none".to_string(), |value| value.to_string())
+        );
     }
 }
 
@@ -84,5 +92,9 @@ fn format_oper(state: crate::link::schema::OperState) -> &'static str {
 }
 
 fn format_bool(value: bool) -> &'static str {
-    if value { "up" } else { "down" }
+    if value {
+        "up"
+    } else {
+        "down"
+    }
 }

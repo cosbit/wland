@@ -30,7 +30,6 @@ enum Command {
     Link(crate::link::cli::LinkCli),
 }
 
-
 pub fn run() -> Result<()> {
     let cli = Cli::parse();
 

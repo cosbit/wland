@@ -160,7 +160,6 @@ pub struct WirelessPhyState {
     pub desired: Option<WirelessPhyDesired>,
 }
 
-
 /// Existing config-facing shape.
 /// Keep this if other contracts already depend on it, but prefer
 /// `WirelessPhyDesired` for new API surfaces.

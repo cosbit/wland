@@ -1,5 +1,5 @@
-pub mod schema;
 pub mod cli;
+pub mod schema;
 
 use crate::link::schema::{
     BridgeRequest, DeleteBridgeRequest, FetchRequest, InitRequest, MacAddress, NetdevChange,
@@ -21,11 +21,14 @@ pub struct RtnetlinkService {
 
 impl RtnetlinkService {
     pub async fn new() -> Result<Self> {
-        let (connection, handle, _) = new_connection().context("failed to open rtnetlink connection")?;
+        let (connection, handle, _) =
+            new_connection().context("failed to open rtnetlink connection")?;
         tokio::spawn(connection);
         Ok(Self {
             handle,
-            state: Arc::new(Mutex::new(RtnetState { interfaces: Vec::new() })),
+            state: Arc::new(Mutex::new(RtnetState {
+                interfaces: Vec::new(),
+            })),
         })
     }
 
@@ -106,7 +109,10 @@ fn link_to_netdev(message: netlink_packet_route::link::LinkMessage) -> NetdevHan
     let ifindex = message.header.index as u32;
     let mut ifname = String::new();
     let mut kind = NetdevKind::Unknown;
-    let admin_up = message.header.flags.contains(&netlink_packet_route::link::LinkFlag::Up);
+    let admin_up = message
+        .header
+        .flags
+        .contains(&netlink_packet_route::link::LinkFlag::Up);
     let mut oper_state = OperState::Unknown;
     let mut mtu = None;
     let mut mac = None;
@@ -190,15 +196,28 @@ fn diff_states(previous: &RtnetState, current: &RtnetState) -> RtnetDiff {
         .collect();
     let changed = current_map
         .iter()
-        .filter_map(|(ifindex, after)| previous_map.get(ifindex).filter(|before| *before != after).map(|before| NetdevChange {
-            before: before.clone(),
-            after: after.clone(),
-        }))
+        .filter_map(|(ifindex, after)| {
+            previous_map
+                .get(ifindex)
+                .filter(|before| *before != after)
+                .map(|before| NetdevChange {
+                    before: before.clone(),
+                    after: after.clone(),
+                })
+        })
         .collect();
 
-    RtnetDiff { added, removed, changed }
+    RtnetDiff {
+        added,
+        removed,
+        changed,
+    }
 }
 
 fn format_mac(bytes: &[u8]) -> String {
-    bytes.iter().map(|byte| format!("{:02x}", byte)).collect::<Vec<_>>().join(":")
+    bytes
+        .iter()
+        .map(|byte| format!("{:02x}", byte))
+        .collect::<Vec<_>>()
+        .join(":")
 }

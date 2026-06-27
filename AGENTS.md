@@ -5,6 +5,7 @@
 - Prefer `nix run .#compile` for compile-only checks.
 - Prefer `nix run .#build` for build validation when the app exists.
 - Prefer `nix run .#test` for test validation.
+- Use `nix develop -c <command>` when a required tool is only available inside the development shell.
 - Do not call `cargo`, `pytest`, or other tool binaries directly when a matching `nix run .#...` app exists.
 - If a required `nix run .#<name>` app does not exist for the task, add the missing app in `flake.nix` before relying on a direct command or wrapper script.
 
